@@ -6,7 +6,8 @@ const register = async () => {
     const json = {
         name: REGISTER_COMMAND.name,
         description: REGISTER_COMMAND.description,
-        type: 1,
+        type: REGISTER_COMMAND.type,
+        options: REGISTER_COMMAND.options,
     }
     const headers = {
         'Authorization': `Bot ${process.env.DISCORD_TOKEN}`,

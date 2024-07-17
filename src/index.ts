@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { InteractionResponseType, InteractionType } from 'discord-interactions'
 import { verifyDiscordInteraction } from './verifyDiscordInteraction'
 import { logger } from 'hono/logger'
+import { REGISTER_COMMAND } from './commands'
 
 const app = new Hono()
 
@@ -19,15 +20,23 @@ app.post('/', verifyDiscordInteraction, async (c) => {
     });
   }
 
+  console.log(message)
   if (message.type === InteractionType.APPLICATION_COMMAND) {
     switch (message.data.name.toLowerCase()) {
-      case 'register':
-        return c.json({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: 'Hello, World!',
-          },
-        });
+      case REGISTER_COMMAND.name.toLowerCase(): {
+        console.log(message.data.options)
+        const input = message.data.options.find((o: any) => o.name === 'year').value as number;
+        if (!input || input < 2013) {
+          return c.json({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE, data: {
+              content: '入学年度は2013年以降を指定してください',
+            }
+          });
+        }
+        const term = input - 2013 + 1;
+        // todo: ロールを付与する
+        return c.json({ type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE, data: { content: `${term}期生として登録しました。` } });
+      }
       default:
         return c.json({ error: 'Unknown Command' }, 400);
     }
