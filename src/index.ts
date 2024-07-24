@@ -28,10 +28,11 @@ app.post('/', verifyDiscordInteraction, async (c) => {
       case REGISTER_COMMAND.name.toLowerCase(): {
         console.log(message.data.options)
         const input = message.data.options.find((o: any) => o.name === 'year').value as number;
-        if (!input || input < 2013) {
+        const currentYear = new Date().getFullYear();
+        if (!input || input < 2013 || input > currentYear) {
           return c.json({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE, data: {
-              content: '入学年度は2013年以降を指定してください',
+              content: `入学年度は2013年以降, ${currentYear}以前の値を指定してください`,
             }
           });
         }
