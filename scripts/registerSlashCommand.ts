@@ -1,19 +1,13 @@
 // ref: https://discord.com/developers/docs/tutorials/hosting-on-cloudflare-workers#registering-commands
 
 import { REGISTER_COMMAND } from "../src/commands"
-import { ROLE_COMMAND } from "../src/commands"
 
 const register = async () => {
-    // const json = {
-    //     name: REGISTER_COMMAND.name,
-    //     description: REGISTER_COMMAND.description,
-    //     type: REGISTER_COMMAND.type,
-    //     options: REGISTER_COMMAND.options,
-    // }
     const json = {
-        name: ROLE_COMMAND.name,
-        description: ROLE_COMMAND.description,
-        type: ROLE_COMMAND.type
+        name: REGISTER_COMMAND.name,
+        description: REGISTER_COMMAND.description,
+        type: REGISTER_COMMAND.type,
+        options: REGISTER_COMMAND.options,
     }
     const headers = {
         'Authorization': `Bot ${process.env.DISCORD_TOKEN}`,
