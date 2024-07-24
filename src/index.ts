@@ -55,22 +55,6 @@ app.post('/', verifyDiscordInteraction, async (c) => {
         await addRole(c, message.guild_id, message.member.user.id, termRole.id);
         return c.json({ type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE, data: { content: `${term}期生として登録しました。` } });
       }
-      case ROLE_COMMAND.name.toLowerCase(): {
-        const { DISCORD_TOKEN } = env<{ DISCORD_TOKEN: string }>(c)
-        const guildId = message.guild_id;
-        const endpoint = `https://discord.com/api/v10/guilds/${guildId}/roles`;
-        const response = await fetch(endpoint, {
-          headers: {
-            Authorization: `Bot ${DISCORD_TOKEN}`,
-          },
-        });
-        if (!response.ok) {
-          return c.json({ error: 'Failed to fetch roles' }, 500);
-        }
-        const roles: any = await response.json();
-        const roleNames = roles.map((role: any) => role.name);
-        return c.json({ type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE, data: { content: `サーバに存在するロールは${roleNames.join(', ')}です` } });
-      }
       default:
         return c.json({ error: 'Unknown Command' }, 400);
     }
