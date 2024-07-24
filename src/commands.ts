@@ -12,3 +12,15 @@ export const REGISTER_COMMAND = {
         },
     ],
 }
+
+export const HELP_COMMAND = {
+    name: 'help',
+    description: 'ヘルプを表示します',
+    type: 1,
+}
+
+export const PING_COMMAND = {
+    name: 'ping',
+    description: 'Ping!',
+    type: 1,
+}

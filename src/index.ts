@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import { logger } from 'hono/logger'
 import { APIInteraction, InteractionType, InteractionResponseType, APIInteractionResponse, ApplicationCommandType } from 'discord-api-types/v10'
 import { verifyDiscordInteraction } from './verifyDiscordInteraction'
-import { REGISTER_COMMAND } from './commands'
+import { HELP_COMMAND, PING_COMMAND, REGISTER_COMMAND } from './commands'
 import { assignRoleToUser, getGuildRoles, createGuildRole, removeUserRole } from './role'
 
 const app = new Hono()
@@ -13,6 +13,10 @@ app.get('/', (c) => {
   console.log(c);
   return c.text('Hello World')
 })
+
+app.get('/status', (c) => {
+  return c.json({ status: 'ok' })
+});
 
 app.post('/', verifyDiscordInteraction, async (c) => {
   const message: APIInteraction = await c.req.json()
@@ -94,6 +98,18 @@ app.post('/', verifyDiscordInteraction, async (c) => {
           });
         };
       }
+      case HELP_COMMAND.name.toLowerCase():
+        return c.json({
+          type: InteractionResponseType.ChannelMessageWithSource, data: {
+            content: '使い方: /register --year <入学年度>\n'
+          }
+        });
+      case PING_COMMAND.name.toLowerCase():
+        return c.json({
+          type: InteractionResponseType.ChannelMessageWithSource, data: {
+            content: 'Pong!'
+          }
+        });
       default:
         return c.json({ error: 'Unknown Command' }, 400);
     }

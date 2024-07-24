@@ -14,7 +14,7 @@ $ bun install
 1. [Discord Developer Potal](https://discord.com/developers/applications) から新規に Discord App を登録し、`Application ID`, `Public Key`, `Token` を取得します.
 2. Discord App の OAuth2 から `bot` スコープを選択し、`Manage Roles`, `Send Messages`, `Use Slash Commands` の権限を付与します.
 3. 2 で生成された URL にアクセスし、bot をサーバーに追加します.
-4. `bun run ./scriptd/registerSlashCommands.ts` を実行し、Slash Commands を登録します.
+4. `bun run ./scripts/registerSlashCommands.ts` を実行し、Slash Commands を登録します.このとき、`.env` ファイルに `DISCORD_APPLICATION_ID`を設定してください.
 5. 1 で取得した情報をそれぞれ`DISCORD_APPLICATION_ID`, `DISCORD_PUBLIC_KEY`, `DISCORD_TOKEN` を環境変数として設定します.
 
 ```bash

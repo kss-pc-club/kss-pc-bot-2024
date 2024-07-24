@@ -1,13 +1,19 @@
 // ref: https://discord.com/developers/docs/tutorials/hosting-on-cloudflare-workers#registering-commands
 
-import { REGISTER_COMMAND } from "../src/commands"
+import { REGISTER_COMMAND, HELP_COMMAND, PING_COMMAND } from "../src/commands"
 
-const register = async () => {
+const commands = [
+    REGISTER_COMMAND,
+    HELP_COMMAND,
+    PING_COMMAND
+]
+
+const register = async (command: any) => {
     const json = {
-        name: REGISTER_COMMAND.name,
-        description: REGISTER_COMMAND.description,
-        type: REGISTER_COMMAND.type,
-        options: REGISTER_COMMAND.options,
+        name: command.name,
+        description: command.description,
+        type: command.type,
+        options: command?.options,
     }
     const headers = {
         'Authorization': `Bot ${process.env.DISCORD_TOKEN}`,
@@ -28,4 +34,4 @@ const register = async () => {
     });
 }
 
-await register()
+commands.forEach(register)
