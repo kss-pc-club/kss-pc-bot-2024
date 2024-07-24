@@ -14,18 +14,19 @@ export const getGuildRoles = async (c: Context, guildId: string) => {
             },
         });
         if (!response.ok) {
-            console.log(response);
+            console.error(response);
             const text = await response.text();
-            throw Error('Failed to fetch roles: ' + response.statusText + ' ' + text);
+            throw Error('Failed to fetch roles: ' + text + ' ' + response.statusText);
         }
         const roles: APIRole[] = await response.json() as APIRole[];
         return roles;
     } catch (e) {
-        throw Error('Failed to fetch roles: ' + e);
+        console.error(e);
+        throw Error('Failed to get roles: ' + e);
     }
 }
 
-export const createRole = async (c: Context, guildId: string, name: string) => {
+export const createGuildRole = async (c: Context, guildId: string, name: string) => {
     const { DISCORD_TOKEN } = env<{ DISCORD_TOKEN: string }>(c)
     const endpoint = `${discordEndpoint}/guilds/${guildId}/roles`;
     try {
@@ -38,18 +39,19 @@ export const createRole = async (c: Context, guildId: string, name: string) => {
             body: JSON.stringify({ name, color: 0x217ff3, hoist: true, mentionable: true, permissions: 0 }),
         });
         if (!response.ok) {
-            console.log(response);
+            console.error(response);
             const text = await response.text();
             throw Error('Failed to create role: ' + response.statusText + ' ' + text);
         }
         const role: APIRole = await response.json() as APIRole;
         return role;
     } catch (e) {
+        console.error(e);
         throw Error('Failed to create role: ' + e);
     }
 }
 
-export const addRole = async (c: Context, guildId: string, userId: string, roleId: string) => {
+export const assignRoleToUser = async (c: Context, guildId: string, userId: string, roleId: string) => {
     const { DISCORD_TOKEN } = env<{ DISCORD_TOKEN: string }>(c)
     const endpoint = `${discordEndpoint}/guilds/${guildId}/members/${userId}/roles/${roleId}`;
     try {
@@ -62,14 +64,15 @@ export const addRole = async (c: Context, guildId: string, userId: string, roleI
         if (!response.ok) {
             console.log(response);
             const text = await response.text();
-            throw Error('Failed to add role: ' + response.statusText + ' ' + text);
+            throw Error('Failed to assign role: ' + response.statusText + ' ' + text);
         }
     } catch (e) {
-        throw Error('Failed to add role: ' + e);
+        console.error(e);
+        throw Error('Failed to assign role: ' + e);
     }
 }
 
-export const removeRole = async (c: Context, guildId: string, userId: string, roleId: string) => {
+export const removeUserRole = async (c: Context, guildId: string, userId: string, roleId: string) => {
     const { DISCORD_TOKEN } = env<{ DISCORD_TOKEN: string }>(c)
     const endpoint = `${discordEndpoint}/guilds/${guildId}/members/${userId}/roles/${roleId}`;
     try {
@@ -80,11 +83,12 @@ export const removeRole = async (c: Context, guildId: string, userId: string, ro
             },
         });
         if (!response.ok) {
-            console.log(response);
+            console.error(response);
             const text = await response.text();
             throw Error('Failed to remove role: ' + response.statusText + ' ' + text);
         }
     } catch (e) {
+        console.error(e);
         throw Error('Failed to remove role: ' + e);
     }
 }

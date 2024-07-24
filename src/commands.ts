@@ -12,9 +12,3 @@ export const REGISTER_COMMAND = {
         },
     ],
 }
-
-export const ROLE_COMMAND = {
-    name: 'role',
-    description: 'サーバに存在するロールを取得します',
-    type: 1,
-}
